@@ -10,8 +10,11 @@ import {
   Question,
   WalletMony,
   Shape,
+  Close,
 } from "@/public/Icon";
-const Sidebar = () => {
+import useMediaQuery from "@/hooks/useIsMobileView";
+const Sidebar = ({ open, toggleDrawer }) => {
+  const isMobileView = useMediaQuery("(max-width: 768px)");
   const [activeMenu, setActiveMenu] = useState(null);
 
   const handleMenuClick = (menu) => {
@@ -19,20 +22,38 @@ const Sidebar = () => {
   };
 
   return (
-    <div className=" w-64  bg-white ">
-      <div className=" w-64 fixed  flex  flex-col justify-between  h-screen   bg-white">
+    <div className={open ? "hidden  bg-white" : "block  w-64  bg-white"}>
+      <div
+        className={
+          isMobileView
+            ? " w-64 fixed  flex  flex-col justify-between bg-white h-full"
+            : " w-64 fixed  flex  flex-col justify-between  h-screen   bg-white "
+        }
+      >
         <div className="flex flex-col  p-4 ">
-          <div className="flex items-center justify-center h-50 mb-20 mt-10">
+          <div
+            className={
+              isMobileView
+                ? "flex items-center justify-between h-50 mb-20 mt-10"
+                : "flex items-center justify-center h-50 mb-20 mt-10"
+            }
+          >
             <Image src="/logo.png" alt="" width={124} height={48} />
+            {isMobileView ? (
+              <button onClick={toggleDrawer}>
+                <Close />
+              </button>
+            ) : null}
           </div>
-
-          <div className="flex items-center justify-center h-16 mb-10 relative">
-            <Setting />
-            <p className="text-lg text-black font-bold pl-2">Dashboard</p>
-            <p className="text-xs text-gray-400 text-end absolute bottom-5 right-5">
-              v.01
-            </p>
-          </div>
+          {!isMobileView && (
+            <div className="flex items-center justify-center h-16 mb-10 relative">
+              <Setting />
+              <p className="text-lg text-black font-bold pl-2">Dashboard</p>
+              <p className="text-xs text-gray-400 text-end absolute bottom-5 right-5">
+                v.01
+              </p>
+            </div>
+          )}
 
           <nav className="flex flex-col space-y-2">
             <button
